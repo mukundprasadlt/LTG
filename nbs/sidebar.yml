@@ -1,0 +1,24 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - developer_guide.ipynb
+      - section: APIs
+        contents:
+          - APIs/00_generate_controls.ipynb
+          - APIs/01_generate_policy.ipynb
+          - APIs/02_controls_analyzrer.ipynb
+          - APIs/03_policy_analyzer.ipynb
+          - APIs/04_jobs_tracker.ipynb
+      - section: Helper
+        contents:
+          - Helper/llm_functions.ipynb
+          - Helper/prompts.ipynb
+          - Helper/tools.ipynb
+      - section: Routers
+        contents:
+          - Routers/00_policy.ipynb
+          - Routers/01_job.ipynb
+      - section: utils
+        contents:
+          - utils/tools.ipynb

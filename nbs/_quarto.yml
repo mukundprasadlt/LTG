@@ -1,0 +1,37 @@
+project:
+  type: website
+
+format:
+  html:
+    theme: pulse
+    css: styles.css
+    toc: true
+    keep-md: true
+  commonmark: default
+  
+
+website:
+  open-graph: true
+  repo-actions: [issue]
+  issue-url: https://lockthreatatlassian.atlassian.net/jira/software/c/projects/LG/boards/36
+  favicon: /img/favicon.png
+  navbar:
+    background: primary
+    search: true
+    logo: "/img/logo-white.svg"
+    title: false
+  sidebar:
+    # style: floating
+    search: true
+    style: "docked"
+    background: light
+    # contents: "*.ipynb"
+  page-footer:
+    background: dark
+    border: true
+    center: 
+      - href: https://lockthread.ai/
+        text: |
+          ![](/img/logo-white.svg)
+
+metadata-files: [nbdev.yml, sidebar.yml]

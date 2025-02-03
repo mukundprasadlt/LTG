@@ -1,0 +1,72 @@
+trigger: 
+  branches:
+    include:
+      - None
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: LTGENIUS_INGRESS_CREDS
+  
+stages:
+  - stage: DeployIngressController
+    displayName: 'Deploy NGINX Ingress Controller'
+    jobs:
+      - job: AuthenticateAndInstallIngressController
+        steps:
+          # Install Helm if not already installed
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'  # Your Azure service connection
+              scriptType: 'bash'  # Specify that the script type is bash
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Authenticated with Azure successfully."
+                az aks get-credentials --resource-group $(LTGENIUS_RESOURCE_GROUP) --name $(LTGENIUS_AKS) --overwrite-existing
+                helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+                helm repo update
+                if kubectl get namespace ingress-nginx; then
+                  echo "Namespace ingress-nginx exists. Deleting it..."
+                  kubectl delete namespace ingress-nginx --wait=true
+                  echo "Namespace ingress-nginx deleted. Recreating..."
+                  export LTGENIUS_PUBLIC_IP_RESOURCE_GROUP=$(LTGENIUS_PUBLIC_IP_RESOURCE_GROUP)
+                  export LTGENIUS_INGRESS_PUBLIC_IP=$(LTGENIUS_INGRESS_PUBLIC_IP)
+                  cat azure-ingress-nginx-source.yaml | envsubst > azure-ingress-nginx-source-output.yaml
+                  kubectl apply -f azure-ingress-nginx-source-output.yaml
+                else
+                  echo "Namespace ltgenius-ingress-basic does not exist. Creating it..."
+                  export LTGENIUS_PUBLIC_IP_RESOURCE_GROUP=$(LTGENIUS_PUBLIC_IP_RESOURCE_GROUP)
+                  export LTGENIUS_INGRESS_PUBLIC_IP=$(LTGENIUS_INGRESS_PUBLIC_IP)
+                  cat azure-ingress-nginx-source.yaml | envsubst > azure-ingress-nginx-source-output.yaml
+                  kubectl apply -f azure-ingress-nginx-source-output.yaml
+                fi
+            displayName: 'Authenticate and Install NGINX Ingress Controller with Static IP'
+  
+  - stage: DeployIngressRoutes
+    displayName: 'Deploy Ingress Resources for npd and prod'
+    dependsOn: DeployIngressController  # Ensure the ingress controller is installed first
+    jobs:
+      - job: deployIngressNpd
+        displayName: 'Deploy Ingress Resource for dev'
+        steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'  # Your Azure service connection
+              scriptType: 'bash'  # Specify that the script type is bash
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Authenticated with Azure successfully."
+                az aks get-credentials --resource-group $(LTGENIUS_RESOURCE_GROUP) --name $(LTGENIUS_AKS) --overwrite-existing
+                kubectl apply -f k8s-deployments/ltgenius-ingress-dev.yaml --namespace $(LTGENIUS_AKS_DEV_NAMESPACE)
+      - job: deployIngressProd
+        displayName: 'Deploy Ingress Resource for prod'
+        steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'  # Your Azure service connection
+              scriptType: 'bash'  # Specify that the script type is bash
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Authenticated with Azure successfully."
+                az aks get-credentials --resource-group $(LTGENIUS_RESOURCE_GROUP) --name $(LTGENIUS_AKS) --overwrite-existing
+                kubectl apply -f k8s-deployments/ltgenius-ingress-prod.yaml --namespace $(LTGENIUS_AKS_PROD_NAMESPACE)

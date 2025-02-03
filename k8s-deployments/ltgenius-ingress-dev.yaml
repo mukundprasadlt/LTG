@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-dev
+  namespace: ltgenius-fastapi-dev
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2 # Retain the path after "/dev"
+spec:
+  ingressClassName: nginx  # correct IngressClass name needs to be added here, or else it wont work
+  rules:
+  # - host: 48.216.136.164.nip.io
+  - http:
+      paths:
+      - path: /dev(/|$)(.*) # Match anything after /dev, including subpaths
+        pathType: Prefix
+        backend:
+          service:
+            name: ltgenius-fastapi-dev-service
+            port:
+              number: 80

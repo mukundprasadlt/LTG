@@ -1,0 +1,137 @@
+{
+  "StandardName": "ISO 9001:2015",
+  "Controls": [
+    {
+      "DomainId": "4",
+      "Domain": "Context of the organization",
+      "Controls": [
+        {
+          "controlId": "4.1",
+          "policy": "Context of the organization",
+          "name": "Understanding the organization and its context",
+          "description": "The organization shall determine external and internal issues that are relevant to its purpose and its strategic direction and that affect its ability to achieve the intended result(s) of its quality management system. \nThe organization shall monitor and review information about these external and internal issues. \nNOTE 1 Issues can include positive and negative factors or conditions for consideration.\nNOTE 2 Understanding the external context can be facilitated by considering issues arising from legal, technological, competitive, market, cultural, social and economic environments, whether international, national, regional or local. \nNOTE 3 Understanding the internal context can be facilitated by considering issues related to values, culture, knowledge and performance of the organization."
+        },
+        {
+          "controlId": "4.2",
+          "policy": "Context of the organization",
+          "name": "Understanding the needs and expectations of interested parties",
+          "description": "Due to their effect or potential effect on the organization’s ability to consistently provide products and\nservices that meet customer and applicable statutory and regulatory requirements, the organization\nshall determine:\na) the interested parties that are relevant to the quality management system;\nb) the requirements of these interested parties that are relevant to the quality management system.\nThe organization shall monitor and review information about these interested parties and their\nrelevant requirements."
+        },
+        {
+          "controlId": "4.3",
+          "policy": "Context of the organization",
+          "name": "Determining the scope of the quality management system",
+          "description": "The organization shall determine the boundaries and applicability of the quality management system to establish its scope. When determining this scope, the organization shall consider: a) the external and internal issues referred to in 4.1; b) the requirements of relevant interested parties referred to in 4.2; c) the products and services of the organization. The organization shall apply all the requirements of this International Standard if they are applicable within the determined scope of its quality management system. The scope of the organization’s quality management system shall be available and be maintained as documented information. The scope shall state the types of products and services covered, and provide justification for any requirement of this International Standard that the organization determines is not applicable to the scope of its quality management system. Conformity to this International Standard may only be claimed if the requirements determined as not being applicable do not affect the organization’s ability or responsibility to ensure the conformity of its products and services and the enhancement of customer satisfaction."
+        },
+        {
+          "controlId": "4.4",
+          "policy": "Context of the organization",
+          "name": "Quality management system and its processes",
+          "description": "The organization shall establish, implement, maintain and continually improve a quality management system, including the processes needed and their interactions, in accordance with the requirements of this International Standard. The organization shall determine the processes needed for the quality management system and their application throughout the organization, and shall: a) determine the inputs required and the outputs expected from these processes; b) determine the sequence and interaction of these processes; c) determine and apply the criteria and methods (including monitoring, measurements and related performance indicators) needed to ensure the effective operation and control of these processes; d) determine the resources needed for these processes and ensure their availability; e) assign the responsibilities and authorities for these processes; f) address the risks and opportunities as determined in accordance with the requirements of 6.1; g) evaluate these processes and implement any changes needed to ensure that these processes achieve their intended results; h) improve the processes and the quality management system."
+        }
+      ]
+    },
+    {
+      "DomainId": "5",
+      "Domain": "Leadership",
+      "Controls": [
+        {
+          "controlId": "5.1.1",
+          "policy": "Leadership",
+          "name": "General",
+          "description": "Top management shall demonstrate leadership and commitment with respect to the quality\nmanagement system by:\na) taking accountability for the effectiveness of the quality management system;\nb) ensuring that the quality policy and quality objectives are established for the quality management\nsystem and are compatible with the context and strategic direction of the organization;\nc) ensuring the integration of the quality management system requirements into the organization’s\nbusiness processes;\nd) promoting the use of the process approach and risk-based thinking;\ne) ensuring that the resources needed for the quality management system are available;\nf) communicating the importance of effective quality management and of conforming to the quality\nmanagement system requirements;\ng) ensuring that the quality management system achieves its intended results;\nh) engaging, directing and supporting persons to contribute to the effectiveness of the quality\nmanagement system;\ni) promoting improvement;\nj) supporting other relevant management roles to demonstrate their leadership as it applies to their\nareas of responsibility.\nNOTE Reference to “business” in this International Standard can be interpreted broadly to mean those\nactivities that are core to the purposes of the organization’s existence, whether the organization is public, private,\nfor profit or not for profit."
+        },
+        {
+          "controlId": "5.1.2",
+          "policy": "Leadership",
+          "name": "Customer focus",
+          "description": "Top management shall demonstrate leadership and commitment with respect to customer focus by ensuring that: a) customer and applicable statutory and regulatory requirements are determined, understood and consistently met; b) the risks and opportunities that can affect conformity of products and services and the ability to enhance customer satisfaction are determined and addressed; c) the focus on enhancing customer satisfaction is maintained."
+        },
+        {
+          "controlId": "5.2.1",
+          "policy": "Leadership",
+          "name": "Establishing the quality policy",
+          "description": "Top management shall establish, implement and maintain a quality policy that: a) is appropriate to the purpose and context of the organization and supports its strategic direction; b) provides a framework for setting quality objectives; c) includes a commitment to satisfy applicable requirements; d) includes a commitment to continual improvement of the quality management system."
+        },
+        {
+          "controlId": "5.2.2",
+          "policy": "Leadership",
+          "name": "Communicating the quality policy",
+          "description": "The quality policy shall: a) be available and be maintained as documented information; b) be communicated, understood and applied within the organization; c) be available to relevant interested parties, as appropriate."
+        },
+        {
+          "controlId": "5.3",
+          "policy": "Leadership",
+          "name": "Organizational roles, responsibilities and authorities",
+          "description": "Top management shall ensure that the responsibilities and authorities for relevant roles are assigned, communicated and understood within the organization. Top management shall assign the responsibility and authority for: a) ensuring that the quality management system conforms to the requirements of this International Standard; b) ensuring that the processes are delivering their intended outputs; c) reporting on the performance of the quality management system and on opportunities for improvement (see 10.1), in particular to top management; d) ensuring the promotion of customer focus throughout the organization; e) ensuring that the integrity of the quality management system is maintained when changes to the quality management system are planned and implemented."
+        }
+      ]
+    },
+    {
+      "DomainId": "6",
+      "Domain": "Planning",
+      "Controls": [
+        {
+          "controlId": "6.1",
+          "policy": "Planning",
+          "name": "Actions to address risks and opportunities",
+          "description": "6.1.1 When planning for the quality management system, the organization shall consider the issues\nreferred to in 4.1 and the requirements referred to in 4.2 and determine the risks and opportunities that\nneed to be addressed to:\na) give assurance that the quality management system can achieve its intended result(s);\nb) enhance desirable effects;\nc) prevent, or reduce, undesired effects;\nd) achieve improvement.\n6.1.2 The organization shall plan:\na) actions to address these risks and opportunities;\nb) how to:\n1) integrate and implement the actions into its quality management system processes (see 4.4);\n2) evaluate the effectiveness of these actions.\nActions taken to address risks and opportunities shall be proportionate to the potential impact on the\nconformity of products and services.\nNOTE 1 Options to address risks can include avoiding risk, taking risk in order to pursue an opportunity,\neliminating the risk source, changing the likelihood or consequences, sharing the risk, or retaining risk by\ninformed decision.\nNOTE 2 Opportunities can lead to the adoption of new practices, launching new products, opening new\nmarkets, addressing new customers, building partnerships, using new technology and other desirable and viable\npossibilities to address the organization’s or its customers’ needs."
+        },
+        {
+          "controlId": "6.2",
+          "policy": "Planning",
+          "name": "Quality objectives and planning to achieve them",
+          "description": "The organization shall establish quality objectives at relevant functions, levels and processes needed for the quality management system. The quality objectives shall: a) be consistent with the quality policy; b) be measurable; c) take into account applicable requirements; d) be relevant to conformity of products and services and to enhancement of customer satisfaction; e) be monitored; f) be communicated; g) be updated as appropriate. The organization shall maintain documented information on the quality objectives. When planning how to achieve its quality objectives, the organization shall determine: a) what will be done; b) what resources will be required; c) who will be responsible; d) when it will be completed; e) how the results will be evaluated."
+        },
+        {
+          "controlId": "6.3",
+          "policy": "Planning",
+          "name": "Planning of changes",
+          "description": "When the organization determines the need for changes to the quality management system, the changes shall be carried out in a planned manner (see 4.4). The organization shall consider: a) the purpose of the changes and their potential consequences; b) the integrity of the quality management system; c) the availability of resources; d) the allocation or reallocation of responsibilities and authorities."
+        }
+      ]
+    },
+    {
+      "DomainId": "7",
+      "Domain": "Support",
+      "Controls": [
+        {
+          "controlId": "7.1.1",
+          "policy": "Support",
+          "name": "General",
+          "description": "The organization shall determine and provide the resources needed for the establishment, implementation, maintenance and continual improvement of the quality management system. The organization shall consider: a) the capabilities of, and constraints on, existing internal resources; b) what needs to be obtained from external providers."
+        },
+        {
+          "controlId": "7.1.2",
+          "policy": "Support",
+          "name": "People",
+          "description": "The organization shall determine and provide the persons necessary for the effective implementation of its quality management system and for the operation and control of its processes."
+        },
+        {
+          "controlId": "7.1.3",
+          "policy": "Support",
+          "name": "Infrastructure",
+          "description": "The organization shall determine, provide and maintain the infrastructure necessary for the operation\nof its processes and to achieve conformity of products and services.\nNOTE Infrastructure can include:\na)   buildings and associated utilities;\nb)   equipment, including hardware and software;\nc)   transportation resources;\nd)   information and communication technology."
+        },
+        {
+          "controlId": "7.1.4",
+          "policy": "Support",
+          "name": "Environment for the operation of processes",
+          "description": "The organization shall determine, provide and maintain the environment necessary for the operation\nof its processes and to achieve conformity of products and services.\nNOTE A suitable environment can be a combination of human and physical factors, such as:\na)   social (e.g. non-discriminatory, calm, non-confrontational);\nb)   psychological (e.g. stress-reducing, burnout prevention, emotionally protective);\nc)   physical (e.g. temperature, heat, humidity, light, airflow, hygiene, noise).\nThese factors can differ substantially depending on the products and services provided."
+        },
+        {
+          "controlId": "7.1.5",
+          "policy": "Support",
+          "name": "Monitoring and measuring resources",
+          "description": "7.1.5.1 General\nThe organization shall determine and provide the resources needed to ensure valid and reliable\nresults when monitoring or measuring is used to verify the conformity of products and services to\nrequirements.\nThe organization shall ensure that the resources provided:\na) are suitable for the specific type of monitoring and measurement activities being undertaken;\nb) are maintained to ensure their continuing fitness for their purpose.\nThe organization shall retain appropriate documented information as evidence of fitness for purpose of\nthe monitoring and measurement resources.\n7.1.5.2 Measurement traceability\nWhen measurement traceability is a requirement, or is considered by the organization to be an essential\npart of providing confidence in the validity of measurement results, measuring equipment shall be:\na) calibrated or verified, or both, at specified intervals, or prior to use, against measurement standards\ntraceable to international or national measurement standards; when no such standards exist, the\nbasis used for calibration or verification shall be retained as documented information;\nb) identified in order to determine their status;\nc) safeguarded from adjustments, damage or deterioration that would invalidate the calibration\nstatus and subsequent measurement results.\nThe organization shall determine if the validity of previous measurement results has been adversely\naffected when measuring equipment is found to be unfit for its intended purpose, and shall take\nappropriate action as necessary"
+        },
+        {
+          "controlId": "7.1.6",
+          "policy": "Support",
+          "name": "Organizational knowledge",
+          "description": "The organization shall determine the knowledge necessary for the operation of its processes and to\nachieve conformity of products and services.\nThis knowledge shall be maintained and be made available to the extent necessary.\nWhen addressing changing needs and trends, the organization shall consider its current knowledge\nand determine how to acquire or access any necessary additional knowledge and required updates.\nNOTE 1 Organizational knowledge is knowledge specific to the organization; it is generally gained by\nexperience. It is information that is used and shared to achieve the organization’s objectives.\nNOTE 2 Organizational knowledge can be based on:\na)   internal sources (e.g. intellectual property; knowledge gained from experience; lessons learned from\nfailures and successful projects; capturing and sharing undocumented knowledge and experience; the results of\nimprovements in processes, products and services);\nb)   external sources (e.g. standards; academia; conferences; gathering knowledge from customers or\nexternal providers).\n"
+        }
+    ]
+}
+]
+}

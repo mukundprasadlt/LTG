@@ -1,0 +1,143 @@
+trigger: 
+  branches:
+    include:
+      - feature/prod-autoscale
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: LTGENIUS_DEV_CREDS
+
+stages:
+  # Stage 1: Run Unit test cases
+  - stage: Run_Unit_Testing
+    displayName: "Run Unit Test Cases"
+    jobs:
+      - job: Unit_test
+        displayName: "Unit Test Cases"
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: 3.10
+              addToPath: true
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r ./tests/test_requirements.txt
+            displayName: "Install Dependencies"
+          - script: |
+              cd ./tests/unit/
+              pytest -s
+            displayName: "Running Unit Tests"
+        
+  # Stage 2: Build and Push Docker Image to Azure Container Registry
+  - stage: Build_and_Push
+    displayName: "Build and Push to ACR - Dev"
+    dependsOn: Run_Unit_Testing
+    jobs:
+      - job: Build
+        displayName: "Build Docker Image"
+        steps:
+          # Step 1: Log in to Azure Container Registry
+          - task: Docker@2
+            displayName: "Login to ACR"
+            inputs:
+              command: 'login'
+              containerRegistry: '$(CIRRUSAI_ACR_SERVICE_CONNECTION)'
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'
+
+          # Step 2: Build and Push Docker Image to ACR
+          - task: Docker@2
+            displayName: "Build and Push Docker Image to ACR"
+            inputs:
+              containerRegistry: '$(CIRRUSAI_ACR_SERVICE_CONNECTION)'
+              repository: '$(LTGENIUS_IMAGE)'
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'  # Dockerfile path
+              tags: |
+                latest
+  # Stage 2: Grant AKS ACR Permissions
+  - stage: Grant_AKS_ACR_Permissions
+    displayName: "Grant AKS Pull Permissions from ACR - Dev"
+    dependsOn: Build_and_Push
+    jobs:
+      - job: GrantPermissions
+        displayName: "Grant AKS Permissions"
+        steps:
+          - task: AzureCLI@2
+            displayName: "Retrieve AKS Kubelet Identity"
+            inputs:
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                OBJECT_ID=$(az aks show --resource-group $(LTGENIUS_RESOURCE_GROUP) --name $(LTGENIUS_AKS) --query "identityProfile.kubeletidentity.objectId" -o tsv)
+                echo "##vso[task.setvariable variable=OBJECT_ID]$OBJECT_ID"
+          - task: AzureCLI@2
+            displayName: "Assign AcrPull Role ans keyvault policy"
+            inputs:
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az role assignment create --assignee-object-id $(OBJECT_ID) --role AcrPull --scope $(LTGENIUS_ACR_UID)
+                az keyvault set-policy --name ltgenius-keyvault --secret-permissions get list --object-id $(OBJECT_ID)
+          - task: AzureCLI@2
+            displayName: "Grant AKS ACR Pull Permissions"
+            inputs:
+              azureSubscription: 'cl-cirrusai-ltgenius-service-conn'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az aks update -n ltgenius-aks -g $(LTGENIUS_RESOURCE_GROUP) --attach-acr $(LTGENIUS_ACR_NAME)
+  # Stage 3: Deploy to Azure Kubernetes Service (AKS)
+  - stage: Deploy_to_AKS
+    displayName: "Deploy to AKS - Dev"
+    dependsOn: Grant_AKS_ACR_Permissions  # Ensure deployment only runs after successful build and push
+    jobs:
+      - job: Authenticate_and_Deploy
+        displayName: "Authenticate and Deploy FastAPI Application"
+        steps:
+          # Step 1: Authenticate with Azure and AKS
+          - task: AzureCLI@2
+            displayName: "Authenticate with Azure and Get AKS Credentials"
+            inputs:
+              azureSubscription: '$(CIRRUSAI_SERVICE_CONNECTION)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az aks get-credentials --resource-group $(LTGENIUS_RESOURCE_GROUP) --name $(LTGENIUS_AKS)
+
+          # Step 2: Create or Update Namespace in AKS
+          - script: |
+              if kubectl get namespace $(LTGENIUS_AKS_NAMESPACE); then
+                echo "Namespace ltgenius-fastapi-dev exists. Deleting it..."
+                kubectl delete namespace $(LTGENIUS_AKS_NAMESPACE) --wait=true
+                echo "Namespace ltgenius-fastapi-dev deleted. Recreating..."
+                kubectl create namespace $(LTGENIUS_AKS_NAMESPACE)
+              else
+                echo "Namespace ltgenius-fastapi-dev does not exist. Creating it..."
+                kubectl create namespace $(LTGENIUS_AKS_NAMESPACE)
+              fi
+            displayName: "Create or Update Namespace"
+
+          # Step 3: Deploy FastAPI Application using Kubernetes manifest
+          # export AZURE_AKS_LOADBALANCER_PUBLIC_IP=$(LTGENIUS_AKS_LOADBALANCER_PUBLIC_IP)
+          - script: |
+              export IMAGE_PATH=$(LTGENIUS_IMAGE_PATH)
+              export ENVIRONMENT=$(LTGENIUS_ENVIRONMENT)
+              export PROVIDER=azure
+              export KEYVAULT_ENDPOINT=$(LTGENIUS_KEYVAULT_ENDPOINT)
+              cat k8s-deployments/ltgenius-deployment-dev.yaml | envsubst > k8s-deployments/ltgenius-deployment-dev-output.yaml
+              kubectl apply -f k8s-deployments/ltgenius-deployment-dev-output.yaml
+            displayName: "Substitute variables and Deploy FastAPI Application"
+
+          # Step 4: Verify Deployment
+          - script: |
+              kubectl rollout status deployment/$(LTGENIUS_AKS_NAMESPACE) -n $(LTGENIUS_AKS_NAMESPACE)
+            displayName: "Verify Deployment Status"
+
+          # Step 4: Get Deployments List
+          - script: |
+              kubectl get deployments -n $(LTGENIUS_AKS_NAMESPACE)
+            displayName: "Get Deployments List"

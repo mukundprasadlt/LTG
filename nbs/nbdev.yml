@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "app"
+  site-url: "https://dev.azure.com/CirrusLabsData/CirrusAI//app"
+  description: "LTG"
+  repo-branch: main
+  repo-url: "https://dev.azure.com/CirrusLabsData/CirrusAI/_git/cirrusai-It-genius-api"

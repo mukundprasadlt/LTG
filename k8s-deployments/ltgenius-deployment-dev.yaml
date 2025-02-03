@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ltgenius-fastapi-dev  # Name of the deployment
+  namespace: ltgenius-fastapi-dev  # Kubernetes namespace (can be overridden via CLI in the pipeline)
+spec:
+  replicas: 2  # Number of pods (containers) to run
+  selector:
+    matchLabels:
+      ltgappdev: ltgenius-fastapi-dev  # Label selector to link the pods with the service
+  template:
+    metadata:
+      labels:
+        ltgappdev: ltgenius-fastapi-dev
+    spec:
+      containers:
+      - name: ltgenius-fastapi-dev-container
+        image: "${IMAGE_PATH}"  # Docker image from ACR
+        ports:
+        - containerPort: 8000  # Expose port 8000 (FastAPI's default port)
+        env:
+        - name: ENVIRONMENT
+          value: "${ENVIRONMENT}"
+        - name: PROVIDER
+          value: "${PROVIDER}"
+        - name: KEYVAULT_ENDPOINT
+          value: "${KEYVAULT_ENDPOINT}"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ltgenius-hpa
+  namespace: ltgenius-fastapi-dev
+spec:
+  # selector:
+  #   matchLabels:
+  #     ltgappdev: ltgenius-fastapi-dev
+  minReplicas: 2
+  maxReplicas: 35
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ltgenius-fastapi-dev
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: AverageValue
+        averageValue: 480Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ltgenius-fastapi-dev-service
+  namespace: ltgenius-fastapi-dev
+spec:
+  selector:
+    ltgappdev: ltgenius-fastapi-dev  # Links this service to the deployment's pods
+  ports:
+    - protocol: TCP
+      port: 80  # External-facing port
+      targetPort: 8000  # Port inside the container (FastAPI port)
+      # nodePort: 32151
+  type: ClusterIP  # Expose the service using a LoadBalancer for external access
+  # loadBalancerIP: "${AZURE_AKS_LOADBALANCER_PUBLIC_IP}"
